@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Configurator Admin | Add Vision</title>
+<meta name="theme-color" content="#0d1726">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/brand.css">
+<link rel="stylesheet" href="/assets/admin.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/admin/">
+      <span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+      <img class="logo" alt="" hidden>
+      <span class="divider" hidden></span>
+      <span class="names"><span class="co" data-b="brand.company">Add Vision</span><span class="prod">Configurator admin</span></span>
+    </a>
+    <nav class="head-actions">
+      <a class="btn small onbrand" href="/" target="_blank" rel="noopener">View live site ↗</a>
+      <button class="btn small onbrand" id="signOut" hidden>Sign out</button>
+    </nav>
+  </div>
+</header>
+
+<!-- Sign in -->
+<main id="login" class="wrap" hidden>
+  <form class="panel card-pad login" id="loginForm" novalidate>
+    <div class="eyebrow">Admin</div>
+    <h1 class="title" style="font-size:28px">Sign in</h1>
+    <p class="lede">Manage enquiries, products, prices and branding for the configurator.</p>
+    <div class="field" style="margin-top:18px"><label for="pw">Admin password</label><input class="t" id="pw" type="password" autocomplete="current-password" required></div>
+    <div class="err-line" id="loginErr" hidden></div>
+    <button class="btn primary" type="submit" style="margin-top:14px;width:100%">Sign in</button>
+    <p class="hint">The password is the <span class="mono">ADMIN_PASSWORD</span> environment variable set in Netlify.</p>
+  </form>
+</main>
+
+<!-- App -->
+<main id="app" class="wrap" hidden>
+  <div class="tabs" role="tablist" id="tabs">
+    <button role="tab" data-tab="enquiries" aria-selected="true">Enquiries <span class="count" id="newCount" hidden></span></button>
+    <button role="tab" data-tab="products" aria-selected="false">Products</button>
+    <button role="tab" data-tab="options" aria-selected="false">Options &amp; pricing</button>
+    <button role="tab" data-tab="branding" aria-selected="false">Branding &amp; contact</button>
+    <button role="tab" data-tab="settings" aria-selected="false">Backup</button>
+  </div>
+
+  <!-- Enquiries -->
+  <section class="tab" id="tab-enquiries">
+    <div class="toolbar">
+      <input class="t" id="q" type="search" placeholder="Search name, company, email, reference" aria-label="Search enquiries">
+      <select class="t" id="statusFilter" aria-label="Filter by status">
+        <option value="">All statuses</option><option value="new">New</option><option value="contacted">Contacted</option><option value="quoted">Quoted</option><option value="won">Won</option><option value="lost">Lost</option>
+      </select>
+      <button class="btn ghost small" id="refresh">Refresh</button>
+      <button class="btn ghost small" id="exportCsv">Export CSV</button>
+    </div>
+    <div class="inbox">
+      <div class="panel list-panel"><div class="table-scroll"><table class="list" id="enqTable"></table></div><div class="empty" id="enqEmpty" hidden></div></div>
+      <div class="panel detail" id="detail"><div class="empty">Select an enquiry to see the details, photo and mockup.</div></div>
+    </div>
+  </section>
+
+  <!-- Products -->
+  <section class="tab" id="tab-products" hidden>
+    <div class="panel card-pad">
+      <h2 class="sec">Installation environments</h2>
+      <p class="lede">These are the first choice customers make. Switch one off to hide it and its products.</p>
+      <div class="table-scroll"><table class="edit" id="envTable"></table></div>
+      <button class="btn ghost small" id="addEnv" style="margin-top:10px">Add environment</button>
+    </div>
+    <div id="productGroups"></div>
+  </section>
+
+  <!-- Options & pricing -->
+  <section class="tab" id="tab-options" hidden>
+    <div class="panel card-pad">
+      <h2 class="sec">Pricing</h2>
+      <p class="lede">Prices are optional. When switched on, customers see an indicative budget range based on the screen area, the product's price per m², the mounting and the services they pick.</p>
+      <div class="formgrid three">
+        <label class="check"><input type="checkbox" data-path="pricing.show"><span>Show indicative budget to customers<small>Only products with a price per m² show a budget</small></span></label>
+        <div class="field"><label for="band">Range either side (%)</label><input class="t" id="band" type="number" min="0" max="50" step="1" data-path="pricing.band"></div>
+        <div class="field"><label for="pnote">Note shown with the budget</label><input class="t" id="pnote" data-path="pricing.note"></div>
+      </div>
+    </div>
+    <div class="panel card-pad">
+      <h2 class="sec">Mounting options</h2>
+      <div class="table-scroll"><table class="edit" id="mountTable"></table></div>
+      <button class="btn ghost small" data-add="mounts" style="margin-top:10px">Add mounting option</button>
+    </div>
+    <div class="panel card-pad">
+      <h2 class="sec">Content &amp; services</h2>
+      <p class="lede">"Ticked" means the option starts selected for new visitors.</p>
+      <div class="table-scroll"><table class="edit" id="addonTable"></table></div>
+      <button class="btn ghost small" data-add="addons" style="margin-top:10px">Add service</button>
+    </div>
+    <div class="panel card-pad">
+      <h2 class="sec">Enquiry form lists</h2>
+      <p class="lede">One option per line.</p>
+      <div class="formgrid three">
+        <div class="field"><label for="lsSectors">Sectors</label><textarea class="t" id="lsSectors" rows="10" data-lines="form.sectors"></textarea></div>
+        <div class="field"><label for="lsTimelines">Timelines</label><textarea class="t" id="lsTimelines" rows="10" data-lines="form.timelines"></textarea></div>
+        <div class="field"><label for="lsBudgets">Budget guides</label><textarea class="t" id="lsBudgets" rows="10" data-lines="form.budgets"></textarea></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Branding -->
+  <section class="tab" id="tab-branding" hidden>
+    <div class="panel card-pad">
+      <h2 class="sec">Brand</h2>
+      <p class="lede">Changes preview in this page's header straight away. Save to publish them to the live site.</p>
+      <div class="formgrid">
+        <div class="field"><label for="bCo">Company name</label><input class="t" id="bCo" data-path="brand.company"></div>
+        <div class="field"><label for="bProd">Tool name</label><input class="t" id="bProd" data-path="brand.product"></div>
+        <div class="field"><label for="bWeb">Website</label><input class="t" id="bWeb" data-path="brand.website" placeholder="https://addvision.co"></div>
+        <div class="field"><label for="bLegal">Legal line (footer)</label><input class="t" id="bLegal" data-path="brand.legal"></div>
+        <div class="field"><label for="bAccent">Accent colour</label><div class="color"><input type="color" id="bAccentPick" data-color="brand.accent" aria-label="Pick accent colour"><input class="t mono" id="bAccent" data-path="brand.accent"></div></div>
+        <div class="field"><label for="bInk">Header &amp; footer colour</label><div class="color"><input type="color" id="bInkPick" data-color="brand.ink" aria-label="Pick header colour"><input class="t mono" id="bInk" data-path="brand.ink"></div></div>
+        <div class="field"><label for="bHeader">Header style</label><select class="t" id="bHeader" data-path="brand.header"><option value="dark">Coloured (uses header colour)</option><option value="light">Light (white background)</option></select></div>
+        <div class="field"><label for="bDemo">Text on demo screens</label><input class="t" id="bDemo" data-path="brand.demoText"></div>
+      </div>
+      <div class="logo-row">
+        <div class="logo-prev" id="logoPrev"><span class="muted">No logo uploaded. The grid mark and company name are used.</span></div>
+        <div>
+          <label class="btn ghost small" for="logoFile" tabindex="0" role="button" id="logoBtn">Upload logo</label>
+          <input type="file" id="logoFile" accept="image/png,image/svg+xml,image/jpeg,image/webp" class="vh">
+          <button class="btn ghost small" id="logoClear">Remove logo</button>
+          <p class="hint">PNG or SVG with a transparent background, under 300 KB. Use a white logo with the coloured header, or switch the header to Light.</p>
+        </div>
+      </div>
+    </div>
+    <div class="panel card-pad">
+      <h2 class="sec">Page wording</h2>
+      <div class="formgrid">
+        <div class="field full"><label for="bHead">Headline</label><input class="t" id="bHead" data-path="brand.headline"></div>
+        <div class="field full"><label for="bIntro">Introduction</label><textarea class="t" id="bIntro" rows="3" data-path="brand.intro"></textarea></div>
+        <div class="field full"><label for="cReply">Reply promise (shown on the review step)</label><input class="t" id="cReply" data-path="contact.replyPromise"></div>
+      </div>
+    </div>
+    <div class="panel card-pad">
+      <h2 class="sec">Contact details</h2>
+      <div class="formgrid">
+        <div class="field"><label for="cEmail">Email</label><input class="t" id="cEmail" data-path="contact.email"></div>
+        <div class="field"><label for="cPhone">Phone</label><input class="t" id="cPhone" data-path="contact.phone"></div>
+        <div class="field"><label for="cWa">WhatsApp</label><input class="t" id="cWa" data-path="contact.whatsapp"></div>
+        <div class="field"><label for="cAddr">Address (footer)</label><input class="t" id="cAddr" data-path="contact.address"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Backup -->
+  <section class="tab" id="tab-settings" hidden>
+    <div class="panel card-pad">
+      <h2 class="sec">Backup &amp; restore</h2>
+      <p class="lede">Download your settings before big changes. Restoring loads the file here so you can check it before saving.</p>
+      <div class="actions">
+        <button class="btn ghost" id="exportJson">Download settings</button>
+        <label class="btn ghost" for="importJson" tabindex="0" role="button" id="importBtn">Restore from file</label>
+        <input type="file" id="importJson" accept="application/json,.json" class="vh">
+      </div>
+    </div>
+    <div class="panel card-pad">
+      <h2 class="sec">Reset to defaults</h2>
+      <p class="lede">Removes everything saved in the admin and goes back to the built-in products and branding. Enquiries are not affected.</p>
+      <div class="actions" id="resetArea"><button class="btn danger" id="resetAll">Reset settings…</button></div>
+    </div>
+    <p class="hint" id="lastSaved"></p>
+  </section>
+</main>
+
+<div class="savebar" id="savebar" hidden>
+  <div class="wrap">
+    <span><b>Unsaved changes.</b> The live site won't change until you save.</span>
+    <span class="grow"></span>
+    <button class="btn ghost small" id="discard">Discard</button>
+    <button class="btn primary small" id="save">Save &amp; publish</button>
+  </div>
+</div>
+
+<script src="/assets/brand.js" defer></script>
+<script src="/assets/admin.js" defer></script>
+</body>
+</html>

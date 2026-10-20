@@ -1,0 +1,86 @@
+/* Admin page. Tokens and shared components live in brand.css. */
+body{padding-bottom:80px}
+.head-actions{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.btn.onbrand{border:1px solid color-mix(in srgb, currentColor 35%, transparent);color:inherit;background:transparent}
+.btn.onbrand:hover{background:color-mix(in srgb, currentColor 10%, transparent)}
+
+.login{max-width:420px;margin:56px auto}
+.err-line{margin-top:10px;color:var(--bad);font-size:13.5px}
+
+.tabs{display:flex;gap:2px;margin:22px 0 18px;border-bottom:1px solid var(--line);overflow-x:auto}
+.tabs button{all:unset;cursor:pointer;padding:10px 14px;font-weight:500;font-size:14px;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;display:flex;gap:6px;align-items:center}
+.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.tabs button:focus-visible{outline:2px solid var(--cool);outline-offset:-2px}
+.count{background:var(--accent);color:var(--accent-ink);font-family:var(--mono);font-size:11px;border-radius:999px;padding:0 7px;line-height:18px}
+
+.tab{display:grid;gap:18px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.toolbar input{flex:1 1 240px;width:auto}
+.toolbar select{flex:0 0 160px;width:auto}
+
+.inbox{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:1000px){.inbox{grid-template-columns:minmax(0,1fr)}}
+.list-panel{overflow:hidden}
+.table-scroll{overflow-x:auto}
+table.list{width:100%;border-collapse:collapse;font-size:13.5px}
+table.list th{text-align:left;font-family:var(--mono);font-weight:500;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+table.list td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+table.list tr.row{cursor:pointer}
+table.list tr.row:hover td{background:var(--sunk)}
+table.list tr.row[aria-selected="true"] td{background:var(--accent-soft)}
+table.list tr.row:focus-visible{outline:2px solid var(--cool);outline-offset:-2px}
+table.list td small{display:block;color:var(--muted);font-size:12px}
+table.list .nowrap{white-space:nowrap;font-variant-numeric:tabular-nums}
+.st-new{color:var(--accent)} .st-contacted{color:var(--cool)} .st-quoted{color:var(--warn)} .st-won{color:var(--good)} .st-lost{color:var(--muted)}
+.empty{padding:28px 20px;color:var(--muted);text-align:center;font-size:14px}
+
+.detail{position:sticky;top:calc(env(safe-area-inset-top,0px) + 76px);max-height:calc(100vh - 100px);overflow:auto}
+@media (max-width:1000px){.detail{position:static;max-height:none}}
+.detail .hd{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;gap:10px;align-items:start;justify-content:space-between;flex-wrap:wrap}
+.detail .hd h2{margin:0;font-family:var(--display);font-stretch:108%;font-size:20px}
+.detail .bd{padding:16px 18px;display:grid;gap:16px}
+.kv{display:grid;grid-template-columns:120px minmax(0,1fr);gap:6px 12px;font-size:13.5px;margin:0}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0;overflow-wrap:anywhere}
+.kv dd.sel{user-select:all;font-family:var(--mono);font-size:13px}
+.imgs{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.imgs figure{margin:0}
+.imgs img{display:block;width:100%;border-radius:8px;border:1px solid var(--line);background:var(--sunk);aspect-ratio:4/3;object-fit:contain;cursor:zoom-in}
+.imgs figcaption{font-size:12px;color:var(--muted);margin-top:4px;display:flex;justify-content:space-between;gap:8px}
+.imgs figcaption a{color:var(--cool)}
+pre.spec{margin:0;padding:12px;background:var(--sunk);border-radius:8px;font-family:var(--mono);font-size:12px;white-space:pre-wrap;overflow-wrap:anywhere;max-height:320px;overflow:auto}
+.confirm{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:13.5px}
+
+/* Editable tables */
+table.edit{border-collapse:collapse;font-size:13px;min-width:100%}
+table.edit th{text-align:left;font-family:var(--mono);font-weight:500;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:8px 6px;border-bottom:1px solid var(--line);white-space:nowrap}
+table.edit td{padding:5px 4px;border-bottom:1px solid var(--line);vertical-align:middle}
+table.edit input.t,table.edit select.t{padding:6px 7px;font-size:13px;min-width:0}
+table.edit input[type="number"]{width:86px;font-family:var(--mono)}
+table.edit input.w-l{width:180px} table.edit input.w-m{width:130px} table.edit input.w-xl{width:240px}
+table.edit td.ctr{text-align:center}
+table.edit input[type="checkbox"]{accent-color:var(--accent);width:16px;height:16px}
+table.edit tr.off td{opacity:.55}
+table.edit .rowbtns{display:flex;gap:4px;white-space:nowrap}
+.iconbtn{all:unset;cursor:pointer;font-size:12px;padding:5px 8px;border-radius:6px;border:1px solid var(--line);color:var(--muted)}
+.iconbtn:hover{color:var(--ink);border-color:var(--muted)}
+.iconbtn.del:hover{color:var(--bad);border-color:var(--bad)}
+.iconbtn:focus-visible{outline:2px solid var(--cool)}
+.group-hd{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+
+.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px}
+.formgrid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.formgrid .full{grid-column:1/-1}
+@media (max-width:760px){.formgrid,.formgrid.three{grid-template-columns:minmax(0,1fr)}}
+.color{display:flex;gap:8px;align-items:center}
+.color input[type="color"]{width:42px;height:38px;border:1px solid var(--line);border-radius:7px;padding:2px;background:var(--surface);flex:none;cursor:pointer}
+.logo-row{display:flex;gap:18px;align-items:center;margin-top:18px;flex-wrap:wrap}
+.logo-prev{min-width:220px;min-height:64px;display:grid;place-items:center;padding:12px 16px;border-radius:8px;background:var(--brand-ink);color:var(--brand-fg);font-size:12.5px;text-align:center;max-width:100%}
+.logo-prev img{max-height:44px;max-width:220px}
+.logo-prev .muted{color:inherit;opacity:.75}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center}
+
+.savebar{position:fixed;left:0;right:0;bottom:0;z-index:25;background:var(--ink);color:var(--surface);padding-bottom:env(safe-area-inset-bottom,0px)}
+.savebar .wrap{display:flex;align-items:center;gap:10px;padding-block:12px;flex-wrap:wrap;font-size:14px}
+.savebar .grow{flex:1}
+.savebar .btn.ghost{background:transparent;color:inherit;border-color:color-mix(in srgb, currentColor 40%, transparent)}

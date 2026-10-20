@@ -1,0 +1,67 @@
+{
+  "version": 2,
+  "brand": {
+    "company": "Add Vision",
+    "product": "LED Configurator",
+    "legal": "Add Vision is a trading name of C3 Digital Ltd",
+    "logo": "",
+    "accent": "#e2541c",
+    "ink": "#0d1726",
+    "demoText": "ADD VISION",
+    "headline": "Build your LED video wall",
+    "intro": "Pick where it's going, the pixel pitch and the size. Resolution, weight and power update as you go, and the preview shows it to scale next to a 1.75 m person.",
+    "website": "https://addvision.co"
+  },
+  "contact": {
+    "email": "info@addvision.co",
+    "phone": "0203 410 2891",
+    "whatsapp": "+44 7852 791502",
+    "address": "Unit 15, Mossedge Industrial Estate, Moss Rd, Linwood, Paisley, PA3 3HR",
+    "replyPromise": "We reply within one working day with a quotation and survey dates."
+  },
+  "environments": [
+    {"id": "indoor", "label": "Indoor", "sub": "Reception, retail, boardroom", "enabled": true},
+    {"id": "window", "label": "Window-facing", "sub": "Shopfront, high brightness", "enabled": true},
+    {"id": "outdoor", "label": "Outdoor", "sub": "IP65, direct sunlight", "enabled": true}
+  ],
+  "products": [
+    {"env": "indoor", "enabled": true, "name": "AV Studio COB", "p": 0.9375, "cw": 600, "ch": 337.5, "nits": 600, "kg": 24, "w": 420, "tech": "COB, flip-chip", "refresh": 3840, "service": "Front", "price": 0},
+    {"env": "indoor", "enabled": true, "name": "AV Studio", "p": 1.25, "cw": 600, "ch": 337.5, "nits": 600, "kg": 25, "w": 450, "tech": "SMD 1010", "refresh": 3840, "service": "Front", "price": 0},
+    {"env": "indoor", "enabled": true, "name": "AV Studio", "p": 1.5625, "cw": 600, "ch": 337.5, "nits": 700, "kg": 25, "w": 480, "tech": "SMD 1212", "refresh": 3840, "service": "Front", "price": 0},
+    {"env": "indoor", "enabled": true, "name": "AV Interior", "p": 1.953, "cw": 500, "ch": 500, "nits": 800, "kg": 30, "w": 500, "tech": "SMD 1515", "refresh": 3840, "service": "Front & rear", "price": 0},
+    {"env": "indoor", "enabled": true, "name": "AV Interior", "p": 2.604, "cw": 500, "ch": 500, "nits": 900, "kg": 30, "w": 520, "tech": "SMD 2020", "refresh": 3840, "service": "Front & rear", "price": 0},
+    {"env": "indoor", "enabled": true, "name": "AV Interior", "p": 3.91, "cw": 500, "ch": 1000, "nits": 1000, "kg": 28, "w": 560, "tech": "SMD 2121", "refresh": 3840, "service": "Front & rear", "price": 0},
+    {"env": "window", "enabled": true, "name": "AV Shopfront", "p": 1.953, "cw": 500, "ch": 500, "nits": 2500, "kg": 32, "w": 650, "tech": "SMD 1515 high-bright", "refresh": 3840, "service": "Front", "price": 0},
+    {"env": "window", "enabled": true, "name": "AV Shopfront", "p": 2.5, "cw": 500, "ch": 1000, "nits": 3000, "kg": 30, "w": 700, "tech": "SMD 1921", "refresh": 3840, "service": "Front", "price": 0},
+    {"env": "window", "enabled": true, "name": "AV Shopfront", "p": 3.91, "cw": 500, "ch": 1000, "nits": 4000, "kg": 30, "w": 760, "tech": "SMD 1921", "refresh": 3840, "service": "Front", "price": 0},
+    {"env": "outdoor", "enabled": true, "name": "AV Exterior", "p": 2.976, "cw": 500, "ch": 500, "nits": 4500, "kg": 36, "w": 780, "tech": "SMD 1415, IP65", "refresh": 3840, "service": "Front", "price": 0},
+    {"env": "outdoor", "enabled": true, "name": "AV Exterior", "p": 3.91, "cw": 500, "ch": 1000, "nits": 5000, "kg": 34, "w": 800, "tech": "SMD 1921, IP65", "refresh": 3840, "service": "Front & rear", "price": 0},
+    {"env": "outdoor", "enabled": true, "name": "AV Exterior", "p": 4.81, "cw": 500, "ch": 1000, "nits": 5500, "kg": 34, "w": 820, "tech": "SMD 2727, IP65", "refresh": 3840, "service": "Front & rear", "price": 0},
+    {"env": "outdoor", "enabled": true, "name": "AV Billboard", "p": 6.67, "cw": 960, "ch": 960, "nits": 6500, "kg": 40, "w": 850, "tech": "SMD 3535, IP65", "refresh": 3840, "service": "Front & rear", "price": 0},
+    {"env": "outdoor", "enabled": true, "name": "AV Billboard", "p": 8, "cw": 960, "ch": 960, "nits": 6500, "kg": 40, "w": 850, "tech": "SMD 3535, IP65", "refresh": 3840, "service": "Rear", "price": 0},
+    {"env": "outdoor", "enabled": true, "name": "AV Billboard", "p": 10, "cw": 960, "ch": 960, "nits": 7000, "kg": 42, "w": 900, "tech": "DIP 346, IP65", "refresh": 1920, "service": "Rear", "price": 0}
+  ],
+  "mounts": [
+    {"id": "wall", "label": "Wall-mounted", "sub": "Fixed frame on load-bearing wall", "enabled": true, "price": 0, "per": "m2"},
+    {"id": "floor", "label": "Floor-standing", "sub": "Ground-stacked with rear support", "enabled": true, "price": 0, "per": "m2"},
+    {"id": "hung", "label": "Ceiling-hung", "sub": "Flown from rated points", "enabled": true, "price": 0, "per": "m2"},
+    {"id": "pole", "label": "Pole / totem", "sub": "Freestanding steel structure", "enabled": true, "price": 0, "per": "fixed"}
+  ],
+  "addons": [
+    {"id": "install", "label": "Installation & commissioning", "sub": "Survey, structure, power, calibration", "enabled": true, "default": true, "price": 0, "per": "m2"},
+    {"id": "cms", "label": "Cloud CMS", "sub": "Schedule and update content remotely", "enabled": true, "default": true, "price": 0, "per": "fixed"},
+    {"id": "live", "label": "Live video input", "sub": "HDMI / SDI processor for live feeds", "enabled": true, "default": false, "price": 0, "per": "fixed"},
+    {"id": "content", "label": "Content design", "sub": "Launch content made for your screen", "enabled": true, "default": false, "price": 0, "per": "fixed"},
+    {"id": "warranty", "label": "5-year warranty & maintenance", "sub": "Spares kit and response SLA", "enabled": true, "default": false, "price": 0, "per": "m2"}
+  ],
+  "pricing": {
+    "show": false,
+    "band": 15,
+    "note": "Indicative budget, excluding VAT. Confirmed after a site survey."
+  },
+  "form": {
+    "sectors": ["Retail", "Corporate", "Hospitality", "Healthcare & dental", "Education", "Hotels", "Shopping centres", "Fitness", "Churches & worship", "Stadiums & sport", "Events & staging", "DOOH advertising", "Other"],
+    "timelines": ["Within 1 month", "1–3 months", "3–6 months", "6+ months", "Just researching"],
+    "budgets": ["Not sure yet", "Under £10k", "£10k–£25k", "£25k–£50k", "£50k–£100k", "£100k+"]
+  }
+}

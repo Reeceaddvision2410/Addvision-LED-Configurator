@@ -1,88 +1,85 @@
 # Add Vision LED Configurator
 
-The Add Vision LED Configurator lets a customer design an LED video wall, preview it on a photo of their own site and send you an enquiry. It's a static site with no build step, and enquiries are collected with Netlify Forms.
+The Add Vision LED Configurator lets customers design an LED video wall, see it at real size on a photo of their own shopfront, and send you an enquiry. You manage it from an **Admin page** at `/admin`, where you can see enquiries (with photos and mockups) and change products, prices, options, branding and contact details without touching code.
 
 ## What's in the project
 
-| File | Purpose |
+```
+public/                    the website Netlify serves
+  index.html               configurator (4 steps)
+  admin/index.html         admin page (password protected)
+  thanks.html              thank-you page
+  favicon.svg
+  assets/
+    brand.css, brand.js    shared Add Vision branding (header, footer, colours)
+    styles.css, app.js     configurator and mockup maker
+    admin.css, admin.js    admin page
+    default-config.json    built-in products and settings, used until you save in the admin
+netlify/
+  functions/               the backend API
+    login.mjs              admin sign-in
+    config.mjs             saves and loads settings
+    enquiries.mjs          saves enquiries and photos; lists, updates and deletes them for the admin
+  lib/auth.mjs             password check and sign-in sessions
+netlify.toml               Netlify settings
+package.json               backend dependency (@netlify/blobs)
+```
+
+Everything you save, including settings, enquiries and photos, is stored in **Netlify Blobs**, which comes with your Netlify site. You don't need a database.
+
+## Updating from the previous version
+
+The website files now live in a `public` folder. The simplest way to update GitHub:
+
+1. Delete the old files from the repo: `index.html`, `thanks.html`, `favicon.svg` and the `assets` folder.
+2. Upload everything from this zip, including the `public` and `netlify` folders, `netlify.toml`, `package.json`, `README.md` and `.gitignore`. Keep the folders as they are.
+3. In Netlify, open **Site configuration → Build & deploy → Build settings**. Clear **Base directory**, **Build command** and **Publish directory**, because `netlify.toml` sets them now.
+
+## One-time setup in Netlify
+
+1. **Set the admin password.** Go to **Site configuration → Environment variables → Add a variable**. Set the key to `ADMIN_PASSWORD` and the value to a long password only you know. Optionally, add `SESSION_SECRET` with any long random text.
+2. **Redeploy.** Go to **Deploys → Trigger deploy → Deploy site**.
+3. **Turn on email alerts (optional but recommended).** Go to **Forms**, click **Enable form detection** and redeploy once. Then go to **Forms → Form notifications → Add notification → Email notification**, choose the `led-enquiry` form and enter `info@addvision.co`. You'll get an email for every enquiry. The photos and mockups are in the admin.
+4. Open `https://YOUR-SITE.netlify.app/admin` and sign in with your password.
+
+Changing `ADMIN_PASSWORD` signs out everyone who's signed in.
+
+## Using the admin
+
+| Tab | What you can do |
 | --- | --- |
-| `index.html` | The configurator page and the enquiry form |
-| `assets/app.js` | Product data, calculations, preview drawing, photo tool and form sending |
-| `assets/styles.css` | All styling, with light and dark themes |
-| `thanks.html` | Thank-you page, shown if a browser posts the form without JavaScript |
-| `favicon.svg` | Browser tab icon |
-| `netlify.toml` | Netlify settings and security headers |
+| **Enquiries** | See every enquiry, newest first. Open one to see the contact details, screen spec, the customer's site photo and the mockup. Set a status (New, Contacted, Quoted, Won, Lost), add internal notes, delete enquiries, or export a filtered list to CSV for Excel. |
+| **Products** | Switch environments (Indoor, Window-facing, Outdoor) on or off. Add, duplicate, edit or remove products: pitch, cabinet size, brightness, weight, power, LED type, refresh rate, service access and price per m². Pixels per cabinet is worked out for you. |
+| **Options & pricing** | Turn the customer-facing budget estimate on or off, and set the ± range and the note shown with it. Edit mounting options and services with their prices (per m² or fixed), and the dropdown lists on the enquiry form. |
+| **Branding & contact** | Set the company name, tool name, logo, accent colour, header colour and style, headline, intro text, the text on demo screens, and your contact details and address. Changes preview straight away in the admin header. |
+| **Backup** | Download your settings as a file, restore from a file, or reset everything to the built-in defaults. |
 
-## 1. Put it on GitHub
+Nothing changes on the live site until you press **Save & publish**. **Discard** undoes everything since your last save.
 
-1. Go to github.com, click **New repository** and name it `addvision-led-configurator`. Set it to **Private** and don't add a README.
-2. Choose one way to upload the files:
-   - **In the browser:** open the new repo, click **uploading an existing file**, drag in everything from this folder (including the `assets` folder) and click **Commit changes**.
-   - **From a terminal:** this folder is already a git repository, so run:
-     ```bash
-     git remote add origin https://github.com/YOUR-ACCOUNT/addvision-led-configurator.git
-     git branch -M main
-     git push -u origin main
-     ```
+**Pricing:** a budget only shows when pricing is switched on **and** the chosen product has a price per m². The estimate is screen area × product price, plus the mounting price, plus the services the customer ticked. It's shown as a range of ± the percentage you set, rounded to £100.
 
-## 2. Connect it to Netlify
+## The mockup maker (step 2 for customers)
 
-1. In Netlify, go to **Add new site → Import an existing project → GitHub** and choose the repo.
-2. Leave **Build command** empty and set **Publish directory** to `.` (netlify.toml already sets this).
-3. Click **Deploy**. From then on, Netlify redeploys automatically every time you push to GitHub.
+1. The customer uploads a shopfront photo, or tries the built-in sample shopfront.
+2. They drag two dots to each end of their door, or anything else whose size they know, to set the scale.
+3. The screen appears at the **exact size they configured**. They can drag it into place, move it with the arrow keys, or change the number of cabinets.
+4. Options include showing their own artwork on the screen, an evening view with screen glow, and downloading the mockup as a branded JPG.
+5. When they send the enquiry, their photo and the mockup are attached. You'll see both in the admin.
 
-## 3. Turn on enquiry collection (required)
-
-1. Go to **Site configuration → Forms** and click **Enable form detection**.
-2. Redeploy the site once (**Deploys → Trigger deploy → Deploy site**) so Netlify finds the `led-enquiry` form.
-3. Under **Forms → Form notifications → Add notification → Email notification**, choose the `led-enquiry` form and enter `info@addvision.co`.
-
-Each enquiry includes:
-
-- the contact details and the full specification as text
-- a reference number, for example `AV-261020-K3P9`
-- the customer's site photo, resized to 2000 px
-- the mockup of the screen placed on that photo
-
-To view them, go to **Forms → led-enquiry**. Netlify's free plan has monthly limits on form submissions and file uploads, so check your plan if volumes grow.
-
-## 4. Use your own domain (optional)
-
-Go to **Domain management → Add a domain** and enter something like `configurator.addvision.co`. Then add the CNAME record Netlify gives you at your DNS provider.
-
-To embed the configurator in a page on addvision.co instead:
+## Embedding on addvision.co
 
 ```html
-<iframe src="https://configurator.addvision.co" style="width:100%;height:1400px;border:0" title="LED screen configurator"></iframe>
+<iframe src="https://YOUR-SITE.netlify.app" style="width:100%;height:1500px;border:0" title="LED screen configurator"></iframe>
 ```
 
-`netlify.toml` already allows framing from `addvision.co` and `www.addvision.co`.
+`netlify.toml` already allows framing from addvision.co. The admin page can't be framed.
 
-## Editing products
-
-Open `assets/app.js` and edit the `SERIES` object near the top. Each line is one product:
-
-```js
-{p:2.604, cw:500, ch:500, nits:900, kg:30, w:520, name:"AV Interior", tech:"SMD 2020", refresh:3840, service:"Front & rear"}
-```
-
-| Field | Meaning |
-| --- | --- |
-| `p` | Pixel pitch in mm |
-| `cw`, `ch` | Cabinet width and height in mm |
-| `nits` | Brightness |
-| `kg` | Weight per m² |
-| `w` | Maximum watts per m² |
-| `name`, `tech`, `refresh`, `service` | Shown in the specification |
-
-The figures shipped with the project are typical industry values, not your actual product range. Replace them with your real products before going live. You can edit the file directly on GitHub (click the pencil icon), and Netlify redeploys within a minute.
-
-## Testing locally
-
-Run a simple server from this folder:
+## Running it on your computer (optional)
 
 ```bash
-python3 -m http.server 8080
+npm install
+npm install -g netlify-cli
+ADMIN_PASSWORD=choose-one netlify dev
 ```
 
-Then open http://localhost:8080. Everything works locally except sending the enquiry, which only works once the site is on Netlify.
+Then open http://localhost:8888 for the configurator and http://localhost:8888/admin for the admin.

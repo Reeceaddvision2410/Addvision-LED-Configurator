@@ -1,0 +1,9 @@
+{
+  "name": "addvision-led-configurator",
+  "private": true,
+  "type": "module",
+  "description": "Add Vision LED configurator with site mockup maker and admin",
+  "dependencies": {
+    "@netlify/blobs": "11.1.3"
+  }
+}

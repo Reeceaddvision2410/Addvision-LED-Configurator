@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LED Screen Configurator | Add Vision</title>
+<meta name="description" content="Design your LED video wall with Add Vision: choose pixel pitch and size, see it to scale on a photo of your own shopfront, and get a quotation.">
+<meta name="theme-color" content="#0d1726">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/brand.css">
+<link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/">
+      <span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+      <img class="logo" alt="" hidden>
+      <span class="divider" hidden></span>
+      <span class="names"><span class="co" data-b="brand.company">Add Vision</span><span class="prod" data-b="brand.product">LED Configurator</span></span>
+    </a>
+    <ol class="steps" id="steps">
+      <li><button data-go="1" aria-current="step"><span class="n">1</span><span class="lab">Configure</span></button></li>
+      <li><button data-go="2"><span class="n">2</span><span class="lab">See it on your site</span></button></li>
+      <li><button data-go="3"><span class="n">3</span><span class="lab">Your details</span></button></li>
+      <li><button data-go="4"><span class="n">4</span><span class="lab">Review &amp; send</span></button></li>
+    </ol>
+  </div>
+</header>
+
+<!-- STEP 1: configure -->
+<main id="step1" class="wrap">
+  <div class="intro">
+    <div>
+      <div class="eyebrow">Step 1 of 4</div>
+      <h1 class="title" data-b="brand.headline">Build your LED video wall</h1>
+      <p class="lede" data-b="brand.intro">Pick where it's going, the pixel pitch and the size.</p>
+    </div>
+    <button class="btn ghost small" id="reset">Start again</button>
+  </div>
+
+  <div class="grid">
+    <div class="col">
+      <div class="panel stage">
+        <div class="stage-bar">
+          <span class="title" id="stageTitle">Preview</span>
+          <div class="seg" role="group" aria-label="Preview mode">
+            <button data-view="content" aria-pressed="true">Content</button>
+            <button data-view="cabinets" aria-pressed="false">Cabinet layout</button>
+          </div>
+        </div>
+        <canvas id="scene" width="1600" height="900" aria-label="Scale preview of the configured LED wall"></canvas>
+        <dl class="readout" id="readout"></dl>
+        <div class="budget" id="budget" hidden></div>
+      </div>
+      <div class="panel"><div class="notes" id="notes"></div></div>
+    </div>
+
+    <aside class="panel cfg" aria-label="Configuration">
+      <section>
+        <h2><span class="k">A</span>Where will it be installed?</h2>
+        <div class="opts" id="envOpts"></div>
+      </section>
+      <section>
+        <h2><span class="k">B</span>Closest viewing distance</h2>
+        <div class="range"><input type="range" id="viewDist" min="1" max="40" step="0.5" value="4" aria-label="Closest viewing distance in metres"><output id="viewDistOut">4 m</output></div>
+        <p class="hint">Rule of thumb: 1&nbsp;mm of pitch per metre of distance. The recommended pitch has a dashed green outline.</p>
+      </section>
+      <section>
+        <h2><span class="k">C</span>Pixel pitch</h2>
+        <div class="pitches" id="pitchOpts"></div>
+        <div class="hint" id="seriesInfo"></div>
+      </section>
+      <section>
+        <h2><span class="k">D</span>Screen size</h2>
+        <div class="size">
+          <div class="stepper"><label for="cols">Cabinets wide</label><div class="row"><button data-adj="cols:-1" aria-label="Fewer columns">−</button><input id="cols" inputmode="numeric" value="6"><button data-adj="cols:1" aria-label="More columns">+</button></div><div class="m" id="wOut"></div></div>
+          <div class="stepper"><label for="rows">Cabinets high</label><div class="row"><button data-adj="rows:-1" aria-label="Fewer rows">−</button><input id="rows" inputmode="numeric" value="4"><button data-adj="rows:1" aria-label="More rows">+</button></div><div class="m" id="hOut"></div></div>
+        </div>
+        <div class="fit">
+          <div class="f"><label class="lbl" for="tw">Target width (m)</label><input class="t" id="tw" inputmode="decimal" value="3.0"></div>
+          <div class="f"><label class="lbl" for="th">Target height (m)</label><input class="t" id="th" inputmode="decimal" value="2.0"></div>
+          <button class="btn ghost small" id="fitBtn">Fit</button>
+        </div>
+        <div class="snaps">
+          <button class="btn ghost small" data-aspect="1.7778">Snap to 16:9</button>
+          <button class="btn ghost small" data-aspect="2.3333">Snap to 21:9</button>
+          <button class="btn ghost small" data-aspect="0.5625">Snap to 9:16</button>
+        </div>
+      </section>
+      <section>
+        <h2><span class="k">E</span>Mounting</h2>
+        <div class="opts two" id="mountOpts"></div>
+      </section>
+      <section>
+        <h2><span class="k">F</span>Content &amp; services</h2>
+        <div id="addOns"></div>
+      </section>
+      <div class="cfg-foot">
+        <button class="btn primary" data-go="2">See it on your site →</button>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<!-- STEP 2: mockup maker -->
+<main id="step2" class="wrap" hidden>
+  <div class="intro">
+    <div>
+      <div class="eyebrow">Step 2 of 4 · optional</div>
+      <h1 class="title">See it on your site</h1>
+      <p class="lede">Upload a photo of your shopfront or wall. We place your <b id="mkSizeLbl">screen</b> on it at real size, and you can drag it to where it would go.</p>
+    </div>
+    <button class="btn ghost small" data-go="3">Skip this step</button>
+  </div>
+
+  <div class="mk">
+    <div class="panel mk-stage" id="mkStage">
+      <div class="mk-canvas-wrap">
+        <canvas id="mk" width="1600" height="1000" tabindex="0" aria-label="Your photo with the LED screen placed on it. Drag the screen or use the arrow keys to move it."></canvas>
+        <div class="mk-empty" id="mkEmpty">
+          <div class="mk-drop">
+            <div class="mk-icon" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+            <h2 class="sec">Add a photo of your site</h2>
+            <p class="muted">Stand straight on to the wall for the most accurate result. JPG or PNG.</p>
+            <div class="mk-actions">
+              <label class="btn primary" for="mkFile" tabindex="0" role="button" id="mkFileBtn">Upload photo</label>
+              <button class="btn ghost" id="mkSample">Try a sample shopfront</button>
+            </div>
+            <p class="muted small">or drop an image here</p>
+          </div>
+        </div>
+      </div>
+      <input type="file" id="mkFile" accept="image/*" class="vh">
+      <div class="mk-status" id="mkStatus"></div>
+    </div>
+
+    <aside class="panel mk-tools">
+      <section id="mkStepPhoto">
+        <h2><span class="k">1</span>Photo</h2>
+        <div class="row-btns">
+          <label class="btn ghost small" for="mkFile" tabindex="0" role="button" id="mkFileBtn2">Upload a different photo</label>
+          <button class="btn ghost small" id="mkSample2">Sample shopfront</button>
+        </div>
+      </section>
+      <section id="mkStepScale">
+        <h2><span class="k">2</span>Set the scale</h2>
+        <p class="hint">Drag the two orange dots to each end of something you know the size of, like your door. This sets the screen to true size.</p>
+        <div class="field"><label for="mkRef">What does the line measure?</label>
+          <select class="t" id="mkRef">
+            <option value="2.0">Door height (2.0 m)</option>
+            <option value="0.9">Door width (0.9 m)</option>
+            <option value="1.8">Double door width (1.8 m)</option>
+            <option value="custom">Something else…</option>
+          </select></div>
+        <div class="field" id="mkCustomWrap" hidden><label for="mkCustom">Its real length in metres</label><input class="t" id="mkCustom" inputmode="decimal" placeholder="e.g. 4.5"></div>
+        <div class="row-btns"><button class="btn primary small" id="mkScaleDone">Place my screen</button><button class="btn ghost small" id="mkScaleEdit" hidden>Adjust scale</button></div>
+      </section>
+      <section id="mkStepPlace">
+        <h2><span class="k">3</span>Position &amp; size</h2>
+        <p class="hint">Drag the screen into place, or select the photo and use your arrow keys.</p>
+        <div class="size compact">
+          <div class="stepper"><label for="mkCols">Cabinets wide</label><div class="row"><button data-adj="cols:-1" aria-label="Fewer columns">−</button><input id="mkCols" inputmode="numeric" readonly><button data-adj="cols:1" aria-label="More columns">+</button></div><div class="m" id="mkW"></div></div>
+          <div class="stepper"><label for="mkRows">Cabinets high</label><div class="row"><button data-adj="rows:-1" aria-label="Fewer rows">−</button><input id="mkRows" inputmode="numeric" readonly><button data-adj="rows:1" aria-label="More rows">+</button></div><div class="m" id="mkH"></div></div>
+        </div>
+        <div class="field"><label for="mkContent">Show on the screen</label>
+          <select class="t" id="mkContent">
+            <option value="demo">Demo content</option>
+            <option value="art">My own artwork…</option>
+            <option value="grid">Cabinet grid</option>
+          </select></div>
+        <input type="file" id="mkArt" accept="image/*" class="vh">
+        <label class="check"><input type="checkbox" id="mkNight"><span>Evening view<small>Darkens the photo so you can see the screen glow</small></span></label>
+        <label class="check"><input type="checkbox" id="mkLabel" checked><span>Show size label</span></label>
+        <div class="row-btns">
+          <button class="btn ghost small" id="mkCenter">Centre screen</button>
+          <button class="btn ghost small" id="mkDownload">Download mockup</button>
+        </div>
+      </section>
+      <div class="cfg-foot">
+        <button class="btn ghost" data-go="1">← Back</button>
+        <button class="btn primary" data-go="3">Continue →</button>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<!-- STEP 3: details -->
+<main id="step3" class="wrap page" hidden>
+  <div class="intro"><div><div class="eyebrow">Step 3 of 4</div><h1 class="title">Tell us about the project</h1><p class="lede">We use this to prepare your quotation and arrange a free site survey.</p></div></div>
+  <div class="two-col">
+    <form class="panel card-pad" id="leadForm" name="led-enquiry" method="POST" action="/thanks.html" data-netlify="true" netlify-honeypot="bot-field" novalidate>
+      <input type="hidden" name="form-name" value="led-enquiry">
+      <input type="hidden" name="reference" id="hRef">
+      <textarea name="specification" id="hSpec" hidden></textarea>
+      <p hidden><label>Leave this empty: <input name="bot-field" id="hBot"></label></p>
+      <div class="formgrid">
+        <div class="field"><label for="fName">Full name *</label><input class="t" id="fName" name="name" autocomplete="name" required><div class="err" hidden></div></div>
+        <div class="field"><label for="fCompany">Company</label><input class="t" id="fCompany" name="company" autocomplete="organization"></div>
+        <div class="field"><label for="fEmail">Email *</label><input class="t" id="fEmail" name="email" type="email" autocomplete="email" required><div class="err" hidden></div></div>
+        <div class="field"><label for="fPhone">Phone *</label><input class="t" id="fPhone" name="phone" type="tel" autocomplete="tel" required><div class="err" hidden></div></div>
+        <div class="field"><label for="fPost">Installation postcode</label><input class="t" id="fPost" name="postcode" autocomplete="postal-code" placeholder="e.g. PA3 3HR"></div>
+        <div class="field"><label for="fSector">Sector</label><select class="t" id="fSector" name="sector"></select></div>
+        <div class="field"><label for="fWhen">When do you need it?</label><select class="t" id="fWhen" name="timeline"></select></div>
+        <div class="field"><label for="fBudget">Budget guide</label><select class="t" id="fBudget" name="budget"></select></div>
+        <div class="field full"><label for="fNotes">Anything else? (site access, content, existing screens)</label><textarea class="t" id="fNotes" name="notes" rows="4"></textarea></div>
+      </div>
+      <div class="actions">
+        <button type="button" class="btn ghost" data-go="2">← Back</button>
+        <button type="submit" class="btn primary">Review specification →</button>
+      </div>
+    </form>
+    <aside class="panel card-pad">
+      <div class="eyebrow" style="margin-bottom:8px">Your configuration</div>
+      <div class="mini" id="miniSum"></div>
+      <img id="miniMock" class="mock-img" alt="Your site with the screen placed on it" hidden>
+      <button class="btn ghost small" data-go="1" style="margin-top:12px">Edit configuration</button>
+    </aside>
+  </div>
+</main>
+
+<!-- STEP 4: review -->
+<main id="step4" class="wrap page" hidden>
+  <div class="intro"><div><div class="eyebrow">Step 4 of 4</div><h1 class="title">Review your specification</h1><p class="lede">Check the details, then send them to our team. <span data-b="contact.replyPromise"></span></p></div><div class="ref mono" id="refNo"></div></div>
+  <div class="two-col">
+    <div class="panel card-pad" style="min-width:0">
+      <div class="table-scroll"><table class="spec" id="specTable"></table></div>
+      <div class="actions">
+        <button class="btn ghost" data-go="3">← Back</button>
+        <button class="btn primary" id="sendBtn">Send enquiry</button>
+        <button class="btn ghost" id="copySpec">Copy specification</button>
+      </div>
+      <div id="sendStatus" class="note" role="status" style="margin-top:14px" hidden></div>
+      <textarea id="specText" class="t mono" rows="8" readonly style="margin-top:16px;font-size:12px" hidden aria-label="Specification text"></textarea>
+    </div>
+    <aside class="panel card-pad">
+      <div id="mockWrap" hidden>
+        <div class="eyebrow">Your site mockup</div>
+        <img id="mockImg" class="mock-img" alt="Your site photo with the configured LED screen placed on it">
+        <p class="hint">Your photo and this mockup are sent with your enquiry.</p>
+      </div>
+      <h2 class="sec" style="margin-top:6px">Prefer to talk?</h2>
+      <p class="lede" style="margin-bottom:14px">Call or message us and quote your reference.</p>
+      <div class="contact" id="contactLines"></div>
+    </aside>
+  </div>
+</main>
+
+<footer class="site" id="siteFooter"></footer>
+
+<script src="/assets/brand.js" defer></script>
+<script src="/assets/app.js" defer></script>
+</body>
+</html>
