@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LED Screen Configurator | Add Vision</title>
+<meta name="description" content="Design your LED video wall with Add Vision: choose pixel pitch and size, preview it on your own storefront photo, and get a quotation.">
+<meta name="theme-color" content="#0d1726">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="brand"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span>Add Vision<br><small>LED Configurator</small></span></div>
+    <ol class="steps" id="steps">
+      <li><button data-go="1" aria-current="step"><span class="n">1</span>Configure screen</button></li>
+      <li><button data-go="2"><span class="n">2</span>Your details</button></li>
+      <li><button data-go="3"><span class="n">3</span>Review &amp; send</button></li>
+    </ol>
+  </div>
+</header>
+
+<!-- STEP 1 -->
+<main id="step1" class="wrap">
+  <div class="intro">
+    <div>
+      <div class="eyebrow">Step 1 of 3</div>
+      <h1>Build your LED video wall</h1>
+      <p>Pick where it's going, the pixel pitch and the size. Resolution, weight and power update as you go, and the preview shows it to scale next to a 1.75&nbsp;m person. Open <b>Your site</b> to upload a photo of your storefront and place the screen on it.</p>
+    </div>
+    <button class="btn ghost small" id="reset">Start again</button>
+  </div>
+
+  <div class="grid">
+    <div style="display:grid;gap:20px;min-width:0">
+      <div class="panel stage">
+        <div class="stage-bar">
+          <span class="title" id="stageTitle">Preview</span>
+          <div class="seg" role="group" aria-label="Preview mode">
+            <button data-view="content" aria-pressed="true">Content</button>
+            <button data-view="cabinets" aria-pressed="false">Cabinet layout</button>
+            <button data-view="site" aria-pressed="false">Your site</button>
+          </div>
+        </div>
+        <canvas id="scene" width="1600" height="900" aria-label="Scale preview of the configured LED wall"></canvas>
+        <div class="sitebar" id="sitebar" hidden>
+          <div class="grp"><span class="lbl">Storefront or wall photo</span>
+            <div class="inline"><label class="btn primary small" for="photoIn" id="photoBtn" tabindex="0" role="button">Upload photo</label><input type="file" id="photoIn" accept="image/*" class="vh"><button class="btn ghost small" id="photoClear" hidden>Remove photo</button></div></div>
+          <label class="check"><input type="checkbox" id="lockRatio" checked><span>Lock box to screen shape</span></label>
+          <div class="grp"><label class="lbl" for="opac">Screen opacity</label><input type="range" id="opac" min="0.2" max="1" step="0.05" value="0.9" style="accent-color:var(--accent)"></div>
+          <div class="grp"><label class="lbl" for="boxW">Measured width of the space (m)</label>
+            <div class="inline"><input class="t" id="boxW" inputmode="decimal" placeholder="e.g. 3.2"><button class="btn ghost small" id="boxFit">Size screen to box</button></div></div>
+          <p class="hint">Drag the box to move it and drag a corner to resize it. To size the screen from your photo, untick the lock, stretch the box over the space, enter its real width, then press <b>Size screen to box</b>.</p>
+        </div>
+        <dl class="readout" id="readout" style="margin:0"></dl>
+      </div>
+      <div class="panel"><div class="notes" id="notes"></div></div>
+    </div>
+
+    <aside class="panel cfg" aria-label="Configuration">
+      <section>
+        <h2><span class="k">A</span>Where will it be installed?</h2>
+        <div class="opts" id="envOpts"></div>
+      </section>
+      <section>
+        <h2><span class="k">B</span>Closest viewing distance</h2>
+        <div class="range"><input type="range" id="viewDist" min="1" max="40" step="0.5" value="4" aria-label="Closest viewing distance in metres"><output id="viewDistOut">4 m</output></div>
+        <p class="series" style="margin-top:4px">Rule of thumb: 1&nbsp;mm of pitch per metre of distance. Recommended pitches have a dashed green outline.</p>
+      </section>
+      <section>
+        <h2><span class="k">C</span>Pixel pitch</h2>
+        <div class="pitches" id="pitchOpts"></div>
+        <div class="series" id="seriesInfo"></div>
+      </section>
+      <section>
+        <h2><span class="k">D</span>Screen size</h2>
+        <div class="size">
+          <div class="stepper"><label for="cols">Cabinets wide</label><div class="row"><button data-adj="cols:-1" aria-label="Fewer columns">−</button><input id="cols" inputmode="numeric" value="6"><button data-adj="cols:1" aria-label="More columns">+</button></div><div class="m" id="wOut"></div></div>
+          <div class="stepper"><label for="rows">Cabinets high</label><div class="row"><button data-adj="rows:-1" aria-label="Fewer rows">−</button><input id="rows" inputmode="numeric" value="6"><button data-adj="rows:1" aria-label="More rows">+</button></div><div class="m" id="hOut"></div></div>
+        </div>
+        <div class="fit">
+          <div class="f"><label for="tw">Target width (m)</label><input class="t" id="tw" inputmode="decimal" value="3.6"></div>
+          <div class="f"><label for="th">Target height (m)</label><input class="t" id="th" inputmode="decimal" value="2.0"></div>
+          <button class="btn ghost small" id="fitBtn">Fit</button>
+        </div>
+        <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
+          <button class="btn ghost small" data-aspect="1.7778">Snap to 16:9</button>
+          <button class="btn ghost small" data-aspect="2.3333">Snap to 21:9</button>
+          <button class="btn ghost small" data-aspect="0.5625">Snap to 9:16</button>
+        </div>
+      </section>
+      <section>
+        <h2><span class="k">E</span>Mounting</h2>
+        <div class="opts two" id="mountOpts"></div>
+      </section>
+      <section>
+        <h2><span class="k">F</span>Content &amp; services</h2>
+        <div class="checks" id="addOns"></div>
+      </section>
+      <footer>
+        <button class="btn primary" data-go="2">Continue to your details →</button>
+      </footer>
+    </aside>
+  </div>
+</main>
+
+<!-- STEP 2 -->
+<main id="step2" class="wrap page" hidden>
+  <div class="intro"><div><div class="eyebrow">Step 2 of 3</div><h1>Tell us about the project</h1><p>We use this to prepare your quotation and arrange a free site survey.</p></div></div>
+  <div class="two-col">
+    <form class="panel card-pad" id="leadForm" name="led-enquiry" method="POST" action="/thanks.html" enctype="multipart/form-data" data-netlify="true" netlify-honeypot="bot-field" novalidate>
+      <input type="hidden" name="form-name" value="led-enquiry">
+      <input type="hidden" name="reference" id="hRef">
+      <textarea name="specification" id="hSpec" hidden></textarea>
+      <input type="file" name="site-photo" id="hPhoto" hidden>
+      <input type="file" name="mockup" id="hMock" hidden>
+      <p hidden><label>Leave this empty: <input name="bot-field"></label></p>
+      <div class="formgrid">
+        <div class="field"><label for="fName">Full name *</label><input class="t" id="fName" name="name" autocomplete="name" required><div class="err" hidden></div></div>
+        <div class="field"><label for="fCompany">Company</label><input class="t" id="fCompany" name="company" autocomplete="organization"></div>
+        <div class="field"><label for="fEmail">Email *</label><input class="t" id="fEmail" name="email" type="email" autocomplete="email" required><div class="err" hidden></div></div>
+        <div class="field"><label for="fPhone">Phone *</label><input class="t" id="fPhone" name="phone" type="tel" autocomplete="tel" required><div class="err" hidden></div></div>
+        <div class="field"><label for="fPost">Installation postcode</label><input class="t" id="fPost" name="postcode" autocomplete="postal-code" placeholder="e.g. PA3 3HR"></div>
+        <div class="field"><label for="fSector">Sector</label>
+          <select class="t" id="fSector" name="sector"><option>Retail</option><option>Corporate</option><option>Hospitality</option><option>Healthcare &amp; dental</option><option>Education</option><option>Hotels</option><option>Shopping centres</option><option>Fitness</option><option>Churches &amp; worship</option><option>Stadiums &amp; sport</option><option>Events &amp; staging</option><option>DOOH advertising</option><option>Other</option></select></div>
+        <div class="field"><label for="fWhen">When do you need it?</label>
+          <select class="t" id="fWhen" name="timeline"><option>Within 1 month</option><option selected>1–3 months</option><option>3–6 months</option><option>6+ months</option><option>Just researching</option></select></div>
+        <div class="field"><label for="fBudget">Budget guide</label>
+          <select class="t" id="fBudget" name="budget"><option>Not sure yet</option><option>Under £10k</option><option>£10k–£25k</option><option>£25k–£50k</option><option>£50k–£100k</option><option>£100k+</option></select></div>
+        <div class="field full"><label for="fNotes">Anything else? (site access, content, existing screens)</label><textarea class="t" id="fNotes" name="notes" rows="4"></textarea></div>
+      </div>
+      <div class="actions">
+        <button type="button" class="btn ghost" data-go="1">← Back</button>
+        <button type="submit" class="btn primary">Review specification →</button>
+      </div>
+    </form>
+    <aside class="panel card-pad">
+      <div class="eyebrow" style="margin-bottom:8px">Your configuration</div>
+      <div class="mini" id="miniSum"></div>
+      <button class="btn ghost small" data-go="1" style="margin-top:12px">Edit configuration</button>
+    </aside>
+  </div>
+</main>
+
+<!-- STEP 3 -->
+<main id="step3" class="wrap page" hidden>
+  <div class="intro"><div><div class="eyebrow">Step 3 of 3</div><h1>Review your specification</h1><p>Check the details below, then send them to our team. We reply within one working day with a quotation and survey dates.</p></div><div class="ref" id="refNo"></div></div>
+  <div class="two-col">
+    <div class="panel card-pad" style="min-width:0">
+      <div style="overflow-x:auto"><table class="spec" id="specTable"></table></div>
+      <div class="actions">
+        <button class="btn ghost" data-go="2">← Back</button>
+        <button class="btn primary" id="sendBtn">Send enquiry to Add Vision</button>
+        <button class="btn ghost" id="copySpec">Copy specification</button>
+      </div>
+      <div id="sendStatus" class="note" role="status" style="margin-top:14px" hidden></div>
+      <textarea id="specText" class="t" rows="8" readonly style="margin-top:16px;font-family:var(--mono);font-size:12px" hidden aria-label="Specification text"></textarea>
+    </div>
+    <aside class="panel card-pad">
+      <h2 class="sec">Prefer to talk?</h2>
+      <p class="lede" style="margin-bottom:14px">Call or message us and quote your reference. You can also copy the specification into an email.</p>
+      <div class="contact">
+        <div class="line"><span>info@addvision.co</span><button class="btn ghost small" data-copy="info@addvision.co">Copy</button></div>
+        <div class="line"><span>0203 410 2891</span><button class="btn ghost small" data-copy="0203 410 2891">Copy</button></div>
+        <div class="line"><span>WhatsApp +44 7852 791502</span><button class="btn ghost small" data-copy="+44 7852 791502">Copy</button></div>
+      </div>
+      <div id="mockWrap" hidden style="margin-top:18px">
+        <div class="eyebrow">Your site mockup</div>
+        <img id="mockImg" alt="Your storefront photo with the configured LED screen placed on it">
+        <p class="series">Your photo and this mockup are sent with your enquiry.</p>
+      </div>
+      <p class="series" style="margin-top:16px">Figures are typical for each product series and are confirmed after a site survey. Final cabinet choice, structure and power distribution are agreed with you before installation.</p>
+    </aside>
+  </div>
+</main>
+
+<div class="toast" id="toast" hidden role="status"></div>
+<script src="/assets/app.js" defer></script>
+</body>
+</html>
