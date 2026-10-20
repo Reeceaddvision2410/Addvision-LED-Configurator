@@ -3,26 +3,27 @@
    --accent and --brand-ink are overwritten at runtime from the admin's Branding settings. */
 :root{
   --bg:#eef1f5; --surface:#ffffff; --sunk:#e3e8ef; --line:#cfd6e0; --ink:#0d1726; --muted:#56647a;
-  --accent:#e2541c; --accent-ink:#ffffff; --accent-soft:color-mix(in srgb, var(--accent) 14%, var(--surface)); --cool:#1d5bd8;
+  --accent:#71c8fa; --accent-ink:#141414; --accent-soft:color-mix(in srgb, var(--accent) 16%, var(--surface)); --cool:#068aaf;
+  --accent-text:color-mix(in srgb, var(--accent) 55%, #0b2533);
   --good:#1d8a4e; --warn:#b36b00; --bad:#c2352b; --stage:#d9dfe7; --stage-floor:#c5cdd8;
-  --brand-ink:#0d1726; --brand-fg:#ffffff;
-  --display:"Archivo",ui-sans-serif,system-ui,sans-serif; --body:"IBM Plex Sans",ui-sans-serif,system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --brand-ink:#141414; --brand-fg:#ffffff; --navy:#172335;
+  --display:"Jost","Futura PT",Futura,"Century Gothic",ui-sans-serif,system-ui,sans-serif; --body:"Jost","Futura PT",Futura,"Century Gothic",ui-sans-serif,system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
   --r:10px;
   padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#0b111b; --surface:#131b28; --sunk:#0f1622; --line:#263244; --ink:#e7edf5; --muted:#91a0b5;
-  --accent-ink:#ffffff; --cool:#6c9cff; --good:#4cc485; --warn:#f0a83a; --bad:#ff6b5f;
+  --accent-text:var(--accent); --cool:#71c8fa; --good:#4cc485; --warn:#f0a83a; --bad:#ff6b5f;
   --stage:#18212f; --stage-floor:#111925; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#0b111b; --surface:#131b28; --sunk:#0f1622; --line:#263244; --ink:#e7edf5; --muted:#91a0b5;
-  --accent-ink:#ffffff; --cool:#6c9cff; --good:#4cc485; --warn:#f0a83a; --bad:#ff6b5f;
+  --accent-text:var(--accent); --cool:#71c8fa; --good:#4cc485; --warn:#f0a83a; --bad:#ff6b5f;
   --stage:#18212f; --stage-floor:#111925; color-scheme:dark}
 
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;min-height:100vh;display:flex;flex-direction:column}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--brand-ink)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--surface)}
 img{max-width:100%}
 [hidden]{display:none!important}
 a{color:inherit}
@@ -32,20 +33,31 @@ main{flex:1}
 /* Header */
 header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--brand-ink);color:var(--brand-fg)}
 header.top .wrap{display:flex;align-items:center;gap:20px;padding-block:12px;flex-wrap:wrap}
-header.top.light{background:var(--surface);color:var(--ink);border-bottom:1px solid var(--line)}
+header.top.light{background:var(--surface);color:var(--ink);border-bottom:1px solid var(--line);box-shadow:0 1px 0 rgba(0,0,0,.02)}
+.stepbar{border-top:1px solid color-mix(in srgb, currentColor 14%, transparent)}
+.stepbar .wrap{padding-block:6px}
+.book{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.book .btn{padding:9px 14px;font-size:13.5px}
+.btn.outline{border:1.5px solid currentColor;color:inherit;background:transparent}
+.btn.outline:hover{background:color-mix(in srgb, currentColor 8%, transparent)}
+@media (max-width:620px){.book{width:100%}.book .btn{flex:1;padding:8px 10px;font-size:13px}}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;min-width:0}
-.brand img.logo{height:34px;width:auto;max-width:180px;object-fit:contain;display:block}
+.brand img.logo{height:40px;width:auto;max-width:200px;object-fit:contain;display:block}
+@media (max-width:620px){.brand img.logo{height:32px}}
 .brand .mark{width:28px;height:28px;display:grid;grid-template-columns:repeat(3,1fr);gap:2px;flex:none}
 .brand .mark i{background:var(--accent);border-radius:1px}
 .brand .mark i:nth-child(2n){opacity:.45}
 .brand .names{display:flex;flex-direction:column;line-height:1.05}
-.brand .co{font-family:var(--display);font-weight:800;font-stretch:115%;letter-spacing:.02em;font-size:18px;text-transform:uppercase}
-.brand .prod{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.7;margin-top:3px}
+.brand .co{font-family:var(--display);font-weight:700;letter-spacing:.04em;font-size:19px;text-transform:uppercase}
+.brand .prod{font-family:var(--display);font-weight:500;font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.75}
 .brand .divider{width:1px;height:28px;background:currentColor;opacity:.25}
 
 /* Footer */
 footer.site{background:var(--brand-ink);color:var(--brand-fg);margin-top:40px}
-footer.site .wrap{display:grid;grid-template-columns:minmax(0,1.3fr) repeat(2,minmax(0,1fr));gap:24px;padding-block:28px 24px;font-size:13.5px}
+footer.site .wrap{display:grid;grid-template-columns:minmax(0,1.3fr) repeat(2,minmax(0,1fr));gap:24px;padding-block:32px 24px;font-size:14px}
+footer.site .flogo{height:38px;width:auto;display:block;margin-bottom:12px}
+footer.site .book{margin:10px 0 0;justify-content:flex-start}
+footer.site .book .btn.outline{color:var(--brand-fg)}
 footer.site h3{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:500;opacity:.6;margin:0 0 8px}
 footer.site p{margin:0 0 4px;opacity:.85}
 footer.site .legal{grid-column:1/-1;border-top:1px solid color-mix(in srgb, var(--brand-fg) 18%, transparent);padding-top:14px;font-size:12px;opacity:.6;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
@@ -53,9 +65,9 @@ footer.site .sel{user-select:all}
 @media (max-width:720px){footer.site .wrap{grid-template-columns:minmax(0,1fr)}}
 
 /* Type */
-.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
-h1.title{font-family:var(--display);font-stretch:112%;font-weight:800;font-size:clamp(26px,4vw,40px);line-height:1.05;margin:0;text-wrap:balance;letter-spacing:-.01em}
-h2.sec{font-family:var(--display);font-stretch:108%;font-weight:700;font-size:20px;margin:0 0 4px;text-wrap:balance}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-text)}
+h1.title{font-family:var(--display);font-weight:600;font-size:clamp(26px,4vw,40px);line-height:1.05;margin:0;text-wrap:balance;letter-spacing:-.01em}
+h2.sec{font-family:var(--display);font-weight:600;font-size:20px;margin:0 0 4px;text-wrap:balance}
 p.lede{color:var(--muted);margin:6px 0 0;max-width:62ch}
 .muted{color:var(--muted)}
 .mono{font-family:var(--mono)}
@@ -65,8 +77,8 @@ p.lede{color:var(--muted);margin:6px 0 0;max-width:62ch}
 .card-pad{padding:20px}
 
 /* Buttons */
-.btn{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:600;font-size:14px;padding:10px 16px;border-radius:8px;text-align:center;line-height:1.2}
-.btn.primary{background:var(--accent);color:var(--accent-ink)}
+.btn{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:500;font-size:14.5px;padding:10px 18px;border-radius:999px;text-align:center;line-height:1.2}
+.btn.primary{background:var(--accent);color:var(--accent-ink);font-weight:600}
 .btn.primary:hover{filter:brightness(1.07)}
 .btn.ghost{border:1px solid var(--line);color:var(--ink);background:var(--surface)}
 .btn.ghost:hover{border-color:var(--muted)}
@@ -88,7 +100,7 @@ input[type="range"]{accent-color:var(--accent)}
 
 /* Chips & notes */
 .chip{flex:none;display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:4px;border:1px solid currentColor;line-height:1.5}
-.chip.ok{color:var(--good)} .chip.warn{color:var(--warn)} .chip.info{color:var(--cool)} .chip.bad{color:var(--bad)} .chip.accent{color:var(--accent)}
+.chip.ok{color:var(--good)} .chip.warn{color:var(--warn)} .chip.info{color:var(--cool)} .chip.bad{color:var(--bad)} .chip.accent{color:var(--accent-text)}
 .note{display:flex;gap:10px;align-items:flex-start;font-size:13.5px}
 .note .chip{margin-top:2px}
 

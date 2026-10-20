@@ -51,12 +51,16 @@ Changing `ADMIN_PASSWORD` signs out everyone who's signed in.
 | **Enquiries** | See every enquiry, newest first. Open one to see the contact details, screen spec, the customer's site photo and the mockup. Set a status (New, Contacted, Quoted, Won, Lost), add internal notes, delete enquiries, or export a filtered list to CSV for Excel. |
 | **Products** | Switch environments (Indoor, Window-facing, Outdoor) on or off. Add, duplicate, edit or remove products: pitch, cabinet size, brightness, weight, power, LED type, refresh rate, service access and price per m². Pixels per cabinet is worked out for you. |
 | **Options & pricing** | Turn the customer-facing budget estimate on or off, and set the ± range and the note shown with it. Edit mounting options and services with their prices (per m² or fixed), and the dropdown lists on the enquiry form. |
-| **Branding & contact** | Set the company name, tool name, logo, accent colour, header colour and style, headline, intro text, the text on demo screens, and your contact details and address. Changes preview straight away in the admin header. |
+| **Branding & contact** | The Add Vision logo, sky blue (#71C8FA) and white header are built in. Here you can change the colours, upload a different logo, edit the **booking buttons** (Book a sales call, Book a CMS demo: text, Zoho link, style, on/off), the headline and intro, and your contact details. Changes preview straight away in the admin header. |
 | **Backup** | Download your settings as a file, restore from a file, or reset everything to the built-in defaults. |
 
 Nothing changes on the live site until you press **Save & publish**. **Discard** undoes everything since your last save.
 
 **Pricing:** a budget only shows when pricing is switched on **and** the chosen product has a price per m². The estimate is screen area × product price, plus the mounting price, plus the services the customer ticked. It's shown as a range of ± the percentage you set, rounded to £100.
+
+## Booking buttons
+
+**Book a sales call** and **Book a CMS demo** link to your Zoho Bookings pages. They show in the header of every page, on the review step, on the thank-you page and in the footer, and open in a new tab. You can change them under **Admin → Branding & contact → Booking buttons**.
 
 ## The mockup maker (step 2 for customers)
 

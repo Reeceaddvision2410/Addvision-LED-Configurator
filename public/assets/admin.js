@@ -87,7 +87,7 @@
       if (d.list === "products" && ["p", "cw", "ch"].includes(d.key)) { const cell = el.closest("tr").querySelector(".pxcab"); if (cell) cell.textContent = pxCab(row); }
       if (d.list === "environments" && d.key === "label") renderProducts();
     } else return;
-    if ((d.path || d.color || "").startsWith("brand")) { AV.applyBrand(W); renderLogo(); }
+    if ((d.path || d.color || "").startsWith("brand") || d.list === "booking") { AV.applyBrand(W); renderLogo(); }
     markDirty();
   });
   $("#app").addEventListener("change", (e) => { if (e.target.type === "checkbox" || e.target.tagName === "SELECT") e.target.dispatchEvent(new Event("input", { bubbles: true })); });
@@ -135,7 +135,15 @@
         <td>${inp(list, i, "price", m.price, "", "number")}</td><td>${perSel(list, i, m.per)}</td>
         <td><button class="iconbtn del" data-del="${list}:${i}">Delete</button></td></tr>`).join("");
   }
-  function renderTables() { renderEnvs(); renderProducts(); renderOptions("mounts", "#mountTable", false); renderOptions("addons", "#addonTable", true); }
+  function renderBooking() {
+    W.booking ||= [];
+    $("#bookingTable").innerHTML = `<tr><th>On</th><th>Button text</th><th>Booking link</th><th>Style</th><th></th></tr>` +
+      W.booking.map((b, i) => `<tr class="${b.enabled === false ? "off" : ""}"><td class="ctr">${chk("booking", i, "enabled", b.enabled !== false, "Show " + b.label)}</td>
+        <td>${inp("booking", i, "label", b.label, "w-l")}</td><td>${inp("booking", i, "url", b.url, "w-xl", "url", 'style="width:380px"')}</td>
+        <td><select class="t" data-list="booking" data-idx="${i}" data-key="style" aria-label="Button style"><option value="primary"${b.style !== "outline" ? " selected" : ""}>Filled</option><option value="outline"${b.style === "outline" ? " selected" : ""}>Outline</option></select></td>
+        <td><div class="rowbtns"><a class="iconbtn" href="${esc(/^https?:/i.test(b.url || "") ? b.url : "#")}" target="_blank" rel="noopener">Test</a><button class="iconbtn del" data-del="booking:${i}">Delete</button></div></td></tr>`).join("");
+  }
+  function renderTables() { renderEnvs(); renderProducts(); renderOptions("mounts", "#mountTable", false); renderOptions("addons", "#addonTable", true); renderBooking(); }
 
   const uid = (p) => `${p}-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 5)}`;
   $("#app").addEventListener("click", (e) => {
@@ -146,13 +154,14 @@
     else if (d.del) { const [list, i] = d.del.split(":"); const gone = W[list].splice(+i, 1)[0]; renderTables(); markDirty(); toast(`Removed ${gone.name || gone.label}. Discard to undo.`); }
     else if (d.delEnv) { W.environments.splice(+d.delEnv, 1); renderTables(); markDirty(); }
     else if (d.add === "mounts") { W.mounts.push({ id: uid("mount"), label: "New mounting option", sub: "", enabled: true, price: 0, per: "fixed" }); renderTables(); markDirty(); }
+    else if (d.add === "booking") { W.booking.push({ label: "Book a call", url: "https://", style: "outline", enabled: true }); renderTables(); markDirty(); }
     else if (d.add === "addons") { W.addons.push({ id: uid("svc"), label: "New service", sub: "", enabled: true, default: false, price: 0, per: "fixed" }); renderTables(); markDirty(); }
     else if (t.id === "addEnv") { W.environments.push({ id: uid("env"), label: "New environment", sub: "", enabled: true }); renderTables(); markDirty(); }
   });
 
   // ---------- Logo ----------
   function renderLogo() {
-    $("#logoPrev").innerHTML = W.brand.logo ? `<img src="${esc(W.brand.logo)}" alt="Logo preview">` : `<span class="muted">No logo uploaded. The grid mark and company name are used.</span>`;
+    $("#logoPrev").innerHTML = `<img src="${esc(AV.logoFor(W.brand, false))}" alt="Logo preview"><span class="muted" style="margin-top:6px">${W.brand.logo ? "Uploaded logo" : "Add Vision logo (built in)"}</span>`;
     $("#logoClear").hidden = !W.brand.logo;
   }
   $("#logoFile").addEventListener("change", (e) => {

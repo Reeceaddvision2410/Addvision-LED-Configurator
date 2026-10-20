@@ -31,13 +31,13 @@ table.list tr.row[aria-selected="true"] td{background:var(--accent-soft)}
 table.list tr.row:focus-visible{outline:2px solid var(--cool);outline-offset:-2px}
 table.list td small{display:block;color:var(--muted);font-size:12px}
 table.list .nowrap{white-space:nowrap;font-variant-numeric:tabular-nums}
-.st-new{color:var(--accent)} .st-contacted{color:var(--cool)} .st-quoted{color:var(--warn)} .st-won{color:var(--good)} .st-lost{color:var(--muted)}
+.st-new{color:var(--accent-text)} .st-contacted{color:var(--cool)} .st-quoted{color:var(--warn)} .st-won{color:var(--good)} .st-lost{color:var(--muted)}
 .empty{padding:28px 20px;color:var(--muted);text-align:center;font-size:14px}
 
 .detail{position:sticky;top:calc(env(safe-area-inset-top,0px) + 76px);max-height:calc(100vh - 100px);overflow:auto}
 @media (max-width:1000px){.detail{position:static;max-height:none}}
 .detail .hd{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;gap:10px;align-items:start;justify-content:space-between;flex-wrap:wrap}
-.detail .hd h2{margin:0;font-family:var(--display);font-stretch:108%;font-size:20px}
+.detail .hd h2{margin:0;font-family:var(--display);font-weight:600;font-size:21px}
 .detail .bd{padding:16px 18px;display:grid;gap:16px}
 .kv{display:grid;grid-template-columns:120px minmax(0,1fr);gap:6px 12px;font-size:13.5px;margin:0}
 .kv dt{color:var(--muted)}
@@ -75,7 +75,7 @@ table.edit .rowbtns{display:flex;gap:4px;white-space:nowrap}
 .color{display:flex;gap:8px;align-items:center}
 .color input[type="color"]{width:42px;height:38px;border:1px solid var(--line);border-radius:7px;padding:2px;background:var(--surface);flex:none;cursor:pointer}
 .logo-row{display:flex;gap:18px;align-items:center;margin-top:18px;flex-wrap:wrap}
-.logo-prev{min-width:220px;min-height:64px;display:grid;place-items:center;padding:12px 16px;border-radius:8px;background:var(--brand-ink);color:var(--brand-fg);font-size:12.5px;text-align:center;max-width:100%}
+.logo-prev{min-width:220px;min-height:64px;display:grid;place-items:center;justify-items:center;padding:12px 16px;border-radius:8px;background:var(--brand-ink);color:var(--brand-fg);font-size:12.5px;text-align:center;max-width:100%}
 .logo-prev img{max-height:44px;max-width:220px}
 .logo-prev .muted{color:inherit;opacity:.75}
 .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center}

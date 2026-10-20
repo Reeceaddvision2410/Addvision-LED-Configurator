@@ -33,23 +33,38 @@
       const v = el.dataset.b.split(".").reduce((o, k) => (o ? o[k] : undefined), cfg);
       if (v !== undefined && v !== "") el.textContent = v;
     });
+    const light = b.header !== "dark";
     const header = document.querySelector("header.top");
     if (header) {
-      header.classList.toggle("light", b.header === "light");
+      header.classList.toggle("light", light);
       const logo = header.querySelector("img.logo"), mark = header.querySelector(".mark"), co = header.querySelector(".co"), div = header.querySelector(".divider");
-      if (logo && b.logo) { logo.src = b.logo; logo.alt = b.company; logo.hidden = false; mark.hidden = true; co.hidden = true; div.hidden = false; }
-      else if (logo) { logo.hidden = true; mark.hidden = false; co.hidden = false; div.hidden = true; }
+      if (logo) {
+        logo.src = logoFor(b, light); logo.alt = b.company; logo.hidden = false;
+        if (mark) mark.hidden = true; if (co) co.hidden = true; if (div) div.hidden = false;
+      }
     }
+    document.querySelectorAll("[data-booking]").forEach((el) => (el.innerHTML = bookingHTML(cfg, el.dataset.booking)));
     const foot = document.getElementById("siteFooter");
     if (foot) {
       const c = cfg.contact, site = (b.website || "").replace(/^https?:\/\//, "").replace(/\/$/, "");
       foot.innerHTML = `<div class="wrap">
-        <div><h3>${esc(b.company)}</h3><p>Digital signage, LED video walls and touchscreens, designed, supplied and installed.</p>${c.address ? `<p>${esc(c.address)}</p>` : ""}</div>
-        <div><h3>Talk to us</h3>${c.phone ? `<p class="sel">${esc(c.phone)}</p>` : ""}${c.email ? `<p class="sel">${esc(c.email)}</p>` : ""}${c.whatsapp ? `<p>WhatsApp <span class="sel">${esc(c.whatsapp)}</span></p>` : ""}</div>
+        <div><img class="flogo" src="${esc(logoFor(b, lum(b.ink || "#141414") > 0.45))}" alt="${esc(b.company)}"><p>Digital signage, LED video walls and touchscreens, designed, supplied and installed.</p>${c.address ? `<p>${esc(c.address)}</p>` : ""}</div>
+        <div><h3>Talk to us</h3>${c.phone ? `<p class="sel">${esc(c.phone)}</p>` : ""}${c.email ? `<p class="sel">${esc(c.email)}</p>` : ""}${c.whatsapp ? `<p>WhatsApp <span class="sel">${esc(c.whatsapp)}</span></p>` : ""}<div class="book">${bookingHTML(cfg, "footer")}</div></div>
         <div><h3>More</h3>${b.website ? `<p><a href="${esc(b.website)}" target="_blank" rel="noopener">${esc(site)}</a></p>` : ""}<p>Free site surveys across the UK</p></div>
         <div class="legal"><span>© ${new Date().getFullYear()} ${esc(b.company)}. ${esc(b.legal || "")}</span><span>${esc(b.product)}</span></div>
       </div>`;
     }
+  }
+
+  // Uploaded logo wins; otherwise the Add Vision logo in dark or white to suit the background.
+  function logoFor(b, onLight) { return b.logo || (onLight ? "/assets/logo-dark.svg" : "/assets/logo-light.svg"); }
+
+  // Booking buttons (Sales call, CMS demo) from Branding & contact in the admin.
+  function bookingHTML(cfg, where) {
+    return (cfg.booking || []).filter((x) => x.enabled !== false && /^https?:\/\//i.test(x.url || "") && x.label).map((x, i) => {
+      const cls = where === "footer" ? (i === 0 ? "primary" : "outline") : x.style === "outline" ? "outline" : "primary";
+      return `<a class="btn ${cls} small" href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.label)}</a>`;
+    }).join("");
   }
 
   let tt;
@@ -59,5 +74,5 @@
     el.textContent = msg; el.hidden = false; clearTimeout(tt); tt = setTimeout(() => (el.hidden = true), 2600);
   }
 
-  window.AV = { esc, fmt, loadConfig, applyBrand, toast, merge };
+  window.AV = { esc, fmt, loadConfig, applyBrand, toast, merge, logoFor };
 })();

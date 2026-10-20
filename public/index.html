@@ -5,30 +5,35 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>LED Screen Configurator | Add Vision</title>
 <meta name="description" content="Design your LED video wall with Add Vision: choose pixel pitch and size, see it to scale on a photo of your own shopfront, and get a quotation.">
-<meta name="theme-color" content="#0d1726">
+<meta name="theme-color" content="#ffffff">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="/assets/brand.css">
-<link rel="stylesheet" href="/assets/styles.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/brand.css?v=3">
+<link rel="stylesheet" href="/assets/styles.css?v=3">
 </head>
 <body>
 
-<header class="top">
+<header class="top light">
   <div class="wrap">
     <a class="brand" href="/">
-      <span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
-      <img class="logo" alt="" hidden>
-      <span class="divider" hidden></span>
-      <span class="names"><span class="co" data-b="brand.company">Add Vision</span><span class="prod" data-b="brand.product">LED Configurator</span></span>
+      <span class="mark" aria-hidden="true" hidden><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+      <img class="logo" src="/assets/logo-dark.svg" alt="Add Vision">
+      <span class="divider"></span>
+      <span class="names"><span class="co" data-b="brand.company" hidden>Add Vision</span><span class="prod" data-b="brand.product">LED Configurator</span></span>
     </a>
-    <ol class="steps" id="steps">
-      <li><button data-go="1" aria-current="step"><span class="n">1</span><span class="lab">Configure</span></button></li>
-      <li><button data-go="2"><span class="n">2</span><span class="lab">See it on your site</span></button></li>
-      <li><button data-go="3"><span class="n">3</span><span class="lab">Your details</span></button></li>
-      <li><button data-go="4"><span class="n">4</span><span class="lab">Review &amp; send</span></button></li>
-    </ol>
+    <nav class="book" data-booking="header" aria-label="Book a call"></nav>
+  </div>
+  <div class="stepbar">
+    <div class="wrap">
+      <ol class="steps" id="steps">
+        <li><button data-go="1" aria-current="step"><span class="n">1</span><span class="lab">Configure</span></button></li>
+        <li><button data-go="2"><span class="n">2</span><span class="lab">See it on your site</span></button></li>
+        <li><button data-go="3"><span class="n">3</span><span class="lab">Your details</span></button></li>
+        <li><button data-go="4"><span class="n">4</span><span class="lab">Review &amp; send</span></button></li>
+      </ol>
+    </div>
   </div>
 </header>
 
@@ -244,7 +249,8 @@
         <p class="hint">Your photo and this mockup are sent with your enquiry.</p>
       </div>
       <h2 class="sec" style="margin-top:6px">Prefer to talk?</h2>
-      <p class="lede" style="margin-bottom:14px">Call or message us and quote your reference.</p>
+      <p class="lede" style="margin-bottom:14px">Book a time with our team, or call and quote your reference.</p>
+      <div class="contact" style="margin-bottom:10px"><div class="book" data-booking="aside"></div></div>
       <div class="contact" id="contactLines"></div>
     </aside>
   </div>
@@ -252,7 +258,7 @@
 
 <footer class="site" id="siteFooter"></footer>
 
-<script src="/assets/brand.js" defer></script>
-<script src="/assets/app.js" defer></script>
+<script src="/assets/brand.js?v=3" defer></script>
+<script src="/assets/app.js?v=3" defer></script>
 </body>
 </html>

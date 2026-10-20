@@ -142,25 +142,40 @@
     $("#notes").innerHTML = n.map((x) => `<div class="note"><span class="chip ${x[0]}">${x[1]}</span><span>${x[2]}</span></div>`).join("");
   }
 
+  // ---------- Brand logo for screens and mockups ----------
+  const LOGO = new Image();
+  LOGO.onload = () => update();
+  LOGO.src = CFG.brand.logo || "/assets/logo-light.svg";
+  const logoReady = () => LOGO.complete && LOGO.naturalWidth > 0;
+
   // ---------- Step 1 scale preview ----------
   const cv = $("#scene"), ctx = cv.getContext("2d");
   const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
 
   function drawDemo(g, x, y, w, h, c) {
     const grad = g.createLinearGradient(x, y, x + w, y + h);
-    grad.addColorStop(0, css("--brand-ink") || "#0b1d4a"); grad.addColorStop(0.55, "#1d5bd8"); grad.addColorStop(1, css("--accent") || "#e2541c");
+    grad.addColorStop(0, "#0d1622"); grad.addColorStop(0.45, "#172335"); grad.addColorStop(0.8, "#068aaf"); grad.addColorStop(1, css("--accent") || "#71c8fa");
     g.fillStyle = grad; g.fillRect(x, y, w, h);
     g.save(); g.beginPath(); g.rect(x, y, w, h); g.clip();
     g.globalAlpha = 0.18; g.fillStyle = "#fff";
     for (let i = 0; i < 7; i++) { g.beginPath(); g.arc(x + w * (0.15 + i * 0.13), y + h * (0.3 + 0.4 * Math.sin(i * 1.7)), Math.min(w, h) * (0.08 + 0.05 * (i % 3)), 0, Math.PI * 2); g.fill(); }
     g.globalAlpha = 1;
+    if (logoReady() && !CFG.brand.demoText) {
+      const ar = LOGO.naturalWidth / LOGO.naturalHeight; let lw = w * 0.62, lh = lw / ar;
+      if (lh > h * 0.42) { lh = h * 0.42; lw = lh * ar; }
+      g.drawImage(LOGO, x + (w - lw) / 2, y + (h - lh) / 2 - h * 0.05, lw, lh);
+      g.globalAlpha = 0.8; g.fillStyle = "#fff"; g.textAlign = "center"; g.textBaseline = "top";
+      g.font = `500 ${Math.max(5, lh * 0.2)}px Jost, Futura, sans-serif`;
+      g.fillText(`${fmt(c.resW)} × ${fmt(c.resH)} · ${fmt(c.pr.nits)} nits`, x + w / 2, y + (h + lh) / 2 - h * 0.02);
+      g.restore(); g.globalAlpha = 1; return;
+    }
     const text = CFG.brand.demoText || CFG.brand.company.toUpperCase();
     let fs = Math.max(6, Math.min(w / 9, h / 3.5));
-    g.font = `800 ${fs}px Archivo, sans-serif`;
-    const tw = g.measureText(text).width; if (tw > w * 0.86) { fs *= (w * 0.86) / tw; g.font = `800 ${fs}px Archivo, sans-serif`; }
+    g.font = `800 ${fs}px Jost, Futura, sans-serif`;
+    const tw = g.measureText(text).width; if (tw > w * 0.86) { fs *= (w * 0.86) / tw; g.font = `800 ${fs}px Jost, Futura, sans-serif`; }
     g.fillStyle = "#fff"; g.textAlign = "left"; g.textBaseline = "alphabetic";
     g.fillText(text, x + w * 0.07, y + h * 0.55);
-    g.font = `500 ${fs * 0.32}px IBM Plex Sans, sans-serif`; g.globalAlpha = 0.85;
+    g.font = `500 ${fs * 0.32}px Jost, Futura, sans-serif`; g.globalAlpha = 0.85;
     g.fillText(`${fmt(c.resW)} × ${fmt(c.resH)} · ${fmt(c.pr.nits)} nits`, x + w * 0.07, y + h * 0.55 + fs * 0.55);
     g.restore(); g.globalAlpha = 1;
   }
@@ -314,10 +329,11 @@
       pill(g, t, b.x + b.w / 2, top < 4 ? b.y + b.h + bez + 6 * k : top, k, accent, css("--accent-ink") || "#fff");
     }
     if (exporting) {
-      const h = 34 * k; g.fillStyle = css("--brand-ink") || "#0d1726"; g.globalAlpha = 0.88; g.fillRect(0, H - h, W, h); g.globalAlpha = 1;
-      g.fillStyle = css("--brand-fg") || "#fff"; g.font = `700 ${13 * k}px Archivo, sans-serif`; g.textAlign = "left"; g.textBaseline = "middle";
-      g.fillText(`${CFG.brand.company.toUpperCase()}`, 12 * k, H - h / 2);
-      const cw2 = g.measureText(CFG.brand.company.toUpperCase()).width;
+      const h = 40 * k; g.fillStyle = "#141414"; g.globalAlpha = 0.88; g.fillRect(0, H - h, W, h); g.globalAlpha = 1;
+      g.fillStyle = css("--brand-fg") || "#fff"; g.textAlign = "left"; g.textBaseline = "middle";
+      let cw2;
+      if (logoReady()) { const lh = h * 0.62, lw = lh * (LOGO.naturalWidth / LOGO.naturalHeight); g.drawImage(LOGO, 12 * k, H - h / 2 - lh / 2, lw, lh); cw2 = lw + 6 * k; }
+      else { g.font = `700 ${13 * k}px Jost, Futura, sans-serif`; g.fillText(CFG.brand.company.toUpperCase(), 12 * k, H - h / 2); cw2 = g.measureText(CFG.brand.company.toUpperCase()).width; }
       g.font = `${11 * k}px IBM Plex Mono, monospace`; g.globalAlpha = 0.8;
       g.fillText(`  ${c.pr.name} ${pitchLabel(c.pr.p)} · ${fmt(c.W, 2)} × ${fmt(c.H, 2)} m · ${fmt(c.resW)} × ${fmt(c.resH)} px${ref ? " · " + ref : ""}`, 12 * k + cw2, H - h / 2);
       g.globalAlpha = 1;
@@ -344,7 +360,7 @@
     g.fillStyle = "#8d7a66"; g.fillRect(0, 40, W, 16);
     for (const x of [240, 640, 1040, 1440]) { g.fillStyle = "#e9e4dc"; g.fillRect(x - 6, ground - m(5.6) - 6, m(1.1) + 12, m(1.6) + 12); g.fillStyle = "#3d4a57"; g.fillRect(x, ground - m(5.6), m(1.1), m(1.6)); g.fillStyle = "#e9e4dc"; g.fillRect(x + m(0.55) - 3, ground - m(5.6), 6, m(1.6)); g.fillRect(x, ground - m(4.8) - 3, m(1.1), 6); }
     g.fillStyle = "#1c2a3a"; g.fillRect(150, ground - m(4.1), 1500, m(0.8));
-    g.fillStyle = "#f2efe8"; g.font = "700 64px Archivo, Georgia, serif"; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText("YOUR SHOP", 900, ground - m(3.7));
+    g.fillStyle = "#f2efe8"; g.font = "700 64px Jost, Futura, sans-serif"; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText("YOUR SHOP", 900, ground - m(3.7));
     g.fillStyle = "#2a3540"; g.fillRect(150, ground - m(3.3), 1500, m(3.3));
     const glass = g.createLinearGradient(0, ground - m(3.2), 0, ground); glass.addColorStop(0, "#4b6377"); glass.addColorStop(1, "#22303d");
     g.fillStyle = glass; g.fillRect(170, ground - m(3.15), 1060, m(2.85));
@@ -497,7 +513,7 @@
     } catch (e) {}
     if (stored || emailed) {
       sent = true; btn.textContent = "Enquiry sent";
-      status("ok", `Thanks ${esc(F("fName").split(" ")[0])}. We've got your enquiry (reference ${esc(ref)}). ${esc(CFG.contact.replyPromise)}`);
+      status("ok", `Thanks ${esc(F("fName").split(" ")[0])}. We've got your enquiry (reference ${esc(ref)}). ${esc(CFG.contact.replyPromise)} Want to talk sooner? Use the booking buttons to pick a time.`);
     } else {
       btn.disabled = false; btn.textContent = "Try sending again";
       status("warn", `${error ? esc(error) + " " : ""}We couldn't send your enquiry just now. Please try again, or copy the specification and email it to ${esc(CFG.contact.email)}.`);
